@@ -14,12 +14,12 @@ import me.philcali.http.api.exception.HttpException;
 import me.philcali.http.api.util.URLBuilder;
 import me.philcali.http.java.NativeClientConfig;
 import me.philcali.http.java.NativeHttpClient;
-import me.philcali.oauth.api.ClientConfig;
 import me.philcali.oauth.api.IExpiringAuthManager;
-import me.philcali.oauth.api.IExpiringToken;
-import me.philcali.oauth.api.IProfile;
-import me.philcali.oauth.api.IToken;
 import me.philcali.oauth.api.exception.AuthException;
+import me.philcali.oauth.api.model.IExpiringToken;
+import me.philcali.oauth.api.model.IProfile;
+import me.philcali.oauth.api.model.IToken;
+import me.philcali.oauth.api.transfer.ClientConfig;
 
 public class AuthManagerGoogle implements IExpiringAuthManager {
     private static final String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";

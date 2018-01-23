@@ -2,7 +2,7 @@ package me.philcali.oauth.google;
 
 import java.util.Map;
 
-import me.philcali.oauth.api.IProfile;
+import me.philcali.oauth.api.model.IProfile;
 
 public class Profile implements IProfile {
     private final Map<String, String> data;

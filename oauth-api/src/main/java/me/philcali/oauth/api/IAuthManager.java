@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.StringJoiner;
 
 import me.philcali.oauth.api.exception.AuthException;
+import me.philcali.oauth.api.model.IProfile;
+import me.philcali.oauth.api.model.IToken;
 
 public interface IAuthManager {
     IToken exchange(String code) throws AuthException;

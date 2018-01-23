@@ -2,7 +2,7 @@ package me.philcali.oauth.google;
 
 import java.util.Map;
 
-import me.philcali.oauth.api.IExpiringToken;
+import me.philcali.oauth.api.model.IExpiringToken;
 
 public class AuthToken implements IExpiringToken {
     private static final String APPLICATION = "GOOGLE";

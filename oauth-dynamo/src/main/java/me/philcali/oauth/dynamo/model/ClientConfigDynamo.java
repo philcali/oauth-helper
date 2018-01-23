@@ -2,7 +2,7 @@ package me.philcali.oauth.dynamo.model;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 
-import me.philcali.oauth.api.ClientConfig;
+import me.philcali.oauth.api.transfer.ClientConfig;
 
 public class ClientConfigDynamo extends ClientConfig {
     private String email;

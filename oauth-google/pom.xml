@@ -33,7 +33,6 @@
       <groupId>me.philcali.http</groupId>
       <artifactId>http-java</artifactId>
       <version>${project.parent.version}</version>
-      <scope>runtime</scope>
     </dependency>
   </dependencies>
 </project>

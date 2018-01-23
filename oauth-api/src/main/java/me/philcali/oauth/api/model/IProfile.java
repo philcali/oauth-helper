@@ -1,4 +1,4 @@
-package me.philcali.oauth.api;
+package me.philcali.oauth.api.model;
 
 public interface IProfile {
     String getEmail();

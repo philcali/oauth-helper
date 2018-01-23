@@ -2,7 +2,7 @@ package me.philcali.oauth.dynamo.model;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 
-import me.philcali.oauth.api.IExpiringToken;
+import me.philcali.oauth.api.model.IExpiringToken;
 
 public class ExpiringTokenDynamo implements IExpiringToken {
     private final Item item;
