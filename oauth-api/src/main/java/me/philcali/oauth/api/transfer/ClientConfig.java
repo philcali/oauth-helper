@@ -92,6 +92,10 @@ public class ClientConfig implements IClientConfig {
     private static final int DEFAULT_CONNECT = 5;
     private static final int DEFAULT_READ = 30;
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     private String api;
     private String clientId;
     private String clientSecret;
