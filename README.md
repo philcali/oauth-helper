@@ -18,10 +18,11 @@ IExpiringToken refreshedToken = authManager.refresh(token);
 ### Google Implementation
 
 ```
-IExpiringAuthManager authManager = new AuthManagerGoogle(new ClientConfig()
+IExpiringAuthManager authManager = new AuthManagerGoogle(ClientConfig.builder()
         .withClientId(clientId)
         .withClientSecret(clientSecret)
-        .withRedirectUrl(redirectUrl));
+        .withRedirectUrl(redirectUrl)
+        .build());
 ```
 
 ### Slack Implementation
@@ -29,9 +30,10 @@ IExpiringAuthManager authManager = new AuthManagerGoogle(new ClientConfig()
 The slack-helper comes with an implementation of the auth manager
 
 ```
-IAuthManager authManager = new SlackIntegrationImpl(new ClientConfig()
+IAuthManager authManager = new SlackIntegrationImpl(ClientConfig.builder()
         .withClientId(clientId)
-        .withClientSecret(clientSecret));
+        .withClientSecret(clientSecret)
+        .build());
 ```
 
 ### Shopify Implementation
@@ -41,9 +43,9 @@ Since the OAuth interaction is performed on a shop by shop basis, use
 the `IShopifyIntegration` to generate shop specific auth managers
 
 ```
-
-IAuthManager authManager = new ShopifyIntegrationImpl(new ClientConfig()
+IAuthManager authManager = new ShopifyIntegrationImpl(ClientConfig.builder()
         .withClientId(clientId)
-        .withClientSecret(clientSecret))
+        .withClientSecret(clientSecret)
+        .build())
         .createAuth(shop);
 ```
