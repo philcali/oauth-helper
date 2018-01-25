@@ -87,6 +87,7 @@ public class ClientConfig implements IClientConfig {
             Arrays.stream(scopes).forEach(this.scopes::add);
             return this;
         }
+
     }
 
     private static final int DEFAULT_CONNECT = 5;

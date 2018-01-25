@@ -13,6 +13,7 @@ import me.philcali.db.dynamo.QueryAdapter;
 import me.philcali.oauth.api.IClientConfigRepository;
 import me.philcali.oauth.api.exception.AuthStorageException;
 import me.philcali.oauth.api.model.IClientConfig;
+import me.philcali.oauth.api.model.IUserClientConfig;
 import me.philcali.oauth.dynamo.model.ClientConfigDynamo;
 
 public class ClientConfigRepositoryDynamo implements IClientConfigRepository {
@@ -24,7 +25,7 @@ public class ClientConfigRepositoryDynamo implements IClientConfigRepository {
     }
 
     @Override
-    public Optional<IClientConfig> get(String api, String clientId) {
+    public Optional<IUserClientConfig> get(String api, String clientId) {
         try {
             Optional<Item> item = Optional.ofNullable(applicationTable.getItem("clientId", clientId, "api", api));
             return item.map(ClientConfigDynamo::new);
@@ -34,18 +35,18 @@ public class ClientConfigRepositoryDynamo implements IClientConfigRepository {
     }
 
     @Override
-    public QueryResult<IClientConfig> list(final QueryParams params) {
+    public QueryResult<IUserClientConfig> list(final QueryParams params) {
         final Function<Table, QueryResult<Item>> adapter = QueryAdapter.builder()
                 .withHashKey("clientId")
                 .withIndexMap("email", applicationTable.getIndex(EMAIL_INDEX))
                 .withQueryParams(params)
                 .build();
-        final Function<Item, IClientConfig> thunk = ClientConfigDynamo::new;
+        final Function<Item, IUserClientConfig> thunk = ClientConfigDynamo::new;
         return adapter.andThen(result -> result.map(thunk)).apply(applicationTable);
     }
 
     @Override
-    public void save(String email, IClientConfig config) {
+    public IUserClientConfig save(String email, IClientConfig config) {
         Item item = new Item()
                 .with("email", email)
                 .with("api", config.getApi())
@@ -57,6 +58,7 @@ public class ClientConfigRepositoryDynamo implements IClientConfigRepository {
                 .withInt("readTimeout", config.getReadTimeout());
         try {
             applicationTable.putItem(item);
+            return new ClientConfigDynamo(item);
         } catch (SdkBaseException ase) {
             throw new AuthStorageException(ase);
         }

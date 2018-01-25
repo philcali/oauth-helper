@@ -98,7 +98,8 @@ public class AuthManagerGoogle implements IExpiringAuthManager {
                 .post("grant_type", "refresh_token");
         try {
             IResponse response = call.respond();
-            return new AuthToken(token, mapper.readValue(response.body(), HashMap.class));
+            return new AuthToken(token, config.getClientId(),
+                    mapper.readValue(response.body(), HashMap.class));
         } catch (IOException | HttpException e) {
             throw new AuthException(e);
         }

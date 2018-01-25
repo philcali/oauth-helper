@@ -8,13 +8,15 @@ public class AuthToken implements IExpiringToken {
     private static final String APPLICATION = "GOOGLE";
     private final Map<String, String> data;
     private final String refreshToken;
+    private final String clientId;
 
     public AuthToken(Map<String, String> data) {
-        this(null, data);
+        this(null, null, data);
     }
 
-    public AuthToken(String refreshToken, Map<String, String> data) {
+    public AuthToken(String refreshToken, String clientId, Map<String, String> data) {
         this.refreshToken = refreshToken;
+        this.clientId = clientId;
         this.data = data;
     }
 
@@ -26,6 +28,11 @@ public class AuthToken implements IExpiringToken {
     @Override
     public String getApi() {
         return APPLICATION;
+    }
+
+    @Override
+    public String getClientId() {
+        return data.getOrDefault("client_id", clientId);
     }
 
     @Override

@@ -8,13 +8,13 @@ import com.amazonaws.SdkBaseException;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 
-import me.philcali.oauth.api.ITokenRespository;
+import me.philcali.oauth.api.ITokenRepository;
 import me.philcali.oauth.api.exception.AuthStorageException;
 import me.philcali.oauth.api.model.IClientConfig;
 import me.philcali.oauth.api.model.IExpiringToken;
 import me.philcali.oauth.dynamo.model.ExpiringTokenDynamo;
 
-public class TokenRepositoryDynamo implements ITokenRespository {
+public class TokenRepositoryDynamo implements ITokenRepository {
     private static final long SESSION_EXPIRES = TimeUnit.HOURS.toSeconds(8);
     private final Table tokenTable;
 

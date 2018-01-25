@@ -2,9 +2,10 @@ package me.philcali.oauth.dynamo.model;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 
+import me.philcali.oauth.api.model.IUserClientConfig;
 import me.philcali.oauth.api.transfer.ClientConfig;
 
-public class ClientConfigDynamo extends ClientConfig {
+public class ClientConfigDynamo extends ClientConfig implements IUserClientConfig {
     private String email;
 
     public ClientConfigDynamo(Item item) {
@@ -18,7 +19,8 @@ public class ClientConfigDynamo extends ClientConfig {
         setReadTimeout(item.getInt("readTimeout"));
     }
 
-    public String getEmail() {
+    @Override
+    public String getUserId() {
         return email;
     }
 }

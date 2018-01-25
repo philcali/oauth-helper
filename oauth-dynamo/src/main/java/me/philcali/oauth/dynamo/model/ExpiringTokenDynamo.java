@@ -22,6 +22,11 @@ public class ExpiringTokenDynamo implements IExpiringToken {
     }
 
     @Override
+    public String getClientId() {
+        return item.getString("clientId");
+    }
+
+    @Override
     public long getExpiresIn() {
         return item.getLong("expiresIn");
     }

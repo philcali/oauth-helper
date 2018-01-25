@@ -10,6 +10,8 @@ import java.util.stream.StreamSupport;
 
 import me.philcali.oauth.api.IAuthManager;
 import me.philcali.oauth.api.model.IClientConfig;
+import me.philcali.oauth.spi.config.DefaultConfigProviderChain;
+import me.philcali.oauth.spi.config.IConfigProvider;
 
 public final class OAuthProviders {
     private static final List<OAuthProvider> DEFAULT_PROVIDERS;
@@ -34,6 +36,16 @@ public final class OAuthProviders {
                 .orElseThrow(() -> new OAuthProviderNotFoundException("Provider of " + config.getApi()
                         + " not found."));
     }
+
+    public static <T extends IAuthManager> T getAuthManager(final String api, final Class<T> authClass) {
+        return getAuthManager(api, new DefaultConfigProviderChain(), authClass);
+    }
+
+    public static <T extends IAuthManager> T getAuthManager(final String api, final IConfigProvider provider,
+            final Class<T> authClass) {
+        return authClass.cast(getAuthManager(provider.getConfig(api)));
+    }
+
 
     private static List<OAuthProvider> loadProviders(final ClassLoader loader) {
         final ServiceLoader<OAuthProvider> providers = ServiceLoader.load(
