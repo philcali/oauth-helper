@@ -15,6 +15,33 @@ IExpiringToken token = authManager.exchange(code);
 IExpiringToken refreshedToken = authManager.refresh(token);
 ```
 
+### OAuth SPI (Service Provider Interface)
+
+The `oauth-spi` package will bring in the `OAuthProvider` SPI, which will
+allow users to get / create generic `IAuthManager`s at will. For example:
+
+```
+IAuthManager googleLogins = OAuthProviders.getAuthManager(ClientConfig.builder()
+        .withApiType("google")
+        .withClientId(googleClientId)
+        .withClientSecret(googleClientSecret)
+        .withRedirectUrl(googleRedirectUrl)
+        .build());
+
+IAuthManager slackLogins = OAuthProviders.getAuthManager(ClientConfig.builder()
+        .withApiType("slack")
+        .withClientId(googleClientId)
+        .withClientSecret(googleClientSecret)
+        .build());
+
+// Shopify requires a shop
+IAuthManager shopifyLogins = OAuthProviders.newAuthManager(ClientConfig.builder()
+        .withApiType("shopify")
+        .withClientId(googleClientId)
+        .withClientSecret(googleClientSecret)
+        .build(), "my.shop.com");
+```
+
 ### Google Implementation
 
 ```
@@ -27,7 +54,7 @@ IExpiringAuthManager authManager = new AuthManagerGoogle(ClientConfig.builder()
 
 ### Slack Implementation
 
-The slack-helper comes with an implementation of the auth manager
+The [slack-helper][1] comes with an implementation of the auth manager
 
 ```
 IAuthManager authManager = new SlackIntegrationImpl(ClientConfig.builder()
@@ -38,7 +65,7 @@ IAuthManager authManager = new SlackIntegrationImpl(ClientConfig.builder()
 
 ### Shopify Implementation
 
-The shopify-helper comes with an implementation of the auth manager.
+The [shopify-helper][2] comes with an implementation of the auth manager.
 Since the OAuth interaction is performed on a shop by shop basis, use
 the `IShopifyIntegration` to generate shop specific auth managers
 
@@ -49,3 +76,6 @@ IAuthManager authManager = new ShopifyIntegrationImpl(ClientConfig.builder()
         .build())
         .createAuth(shop);
 ```
+
+[1]: https://github.com/philcali/slack-helper
+[2]: https://github.com/philcali/shopify-helper
