@@ -16,28 +16,28 @@ import me.philcali.http.java.NativeClientConfig;
 import me.philcali.http.java.NativeHttpClient;
 import me.philcali.oauth.api.IExpiringAuthManager;
 import me.philcali.oauth.api.exception.AuthException;
+import me.philcali.oauth.api.model.IClientConfig;
 import me.philcali.oauth.api.model.IExpiringToken;
 import me.philcali.oauth.api.model.IProfile;
 import me.philcali.oauth.api.model.IToken;
-import me.philcali.oauth.api.transfer.ClientConfig;
 
 public class AuthManagerGoogle implements IExpiringAuthManager {
     private static final String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
     private static final String TOKEN_URL = "https://accounts.google.com/o/oauth2/token";
     private static final String PROFILE_URL = "https://www.googleapis.com/userinfo/v2/me";
 
-    private final ClientConfig config;
+    private final IClientConfig config;
     private final IHttpClient client;
     // TODO: possibly extract this
     private final ObjectMapper mapper;
 
-    public AuthManagerGoogle(final ClientConfig config) {
+    public AuthManagerGoogle(final IClientConfig config) {
         this(config, new NativeHttpClient(new NativeClientConfig()
                 .withConnectTimeout(config.getConnectTimeout())
                 .withRequestTimeout(config.getReadTimeout())), new ObjectMapper());
     }
 
-    public AuthManagerGoogle(final ClientConfig config, final IHttpClient client, final ObjectMapper mapper) {
+    public AuthManagerGoogle(final IClientConfig config, final IHttpClient client, final ObjectMapper mapper) {
         this.config = config;
         this.client = client;
         this.mapper = mapper;

@@ -13,6 +13,7 @@
   	<module>oauth-api</module>
   	<module>oauth-google</module>
     <module>oauth-dynamo</module>
+    <module>oauth-spi</module>
   </modules>
 
   <properties>
