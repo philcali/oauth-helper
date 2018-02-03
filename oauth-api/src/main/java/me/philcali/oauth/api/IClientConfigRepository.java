@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.Optional;
 import java.util.Random;
 
-import me.philcali.db.api.Filters;
+import me.philcali.db.api.Conditions;
 import me.philcali.db.api.QueryParams;
 import me.philcali.db.api.QueryResult;
 import me.philcali.oauth.api.model.IClientConfig;
@@ -34,7 +34,7 @@ public interface IClientConfigRepository {
 
     default QueryResult<IUserClientConfig> listByOwners(final String email) {
         return list(QueryParams.builder()
-                .withFilters(Filters.attribute("email").equalsTo(email))
+                .withConditions(Conditions.attribute("email").equalsTo(email))
                 .build());
     }
 

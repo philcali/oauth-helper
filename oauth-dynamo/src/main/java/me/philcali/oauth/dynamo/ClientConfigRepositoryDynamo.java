@@ -9,7 +9,8 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 
 import me.philcali.db.api.QueryParams;
 import me.philcali.db.api.QueryResult;
-import me.philcali.db.dynamo.QueryAdapter;
+import me.philcali.db.dynamo.IRetrievalStrategy;
+import me.philcali.db.dynamo.QueryRetrievalStrategy;
 import me.philcali.oauth.api.IClientConfigRepository;
 import me.philcali.oauth.api.exception.AuthStorageException;
 import me.philcali.oauth.api.model.IClientConfig;
@@ -17,11 +18,16 @@ import me.philcali.oauth.api.model.IUserClientConfig;
 import me.philcali.oauth.dynamo.model.ClientConfigDynamo;
 
 public class ClientConfigRepositoryDynamo implements IClientConfigRepository {
-    private final String EMAIL_INDEX = "email-index";
     private final Table applicationTable;
+    private final IRetrievalStrategy query;
 
     public ClientConfigRepositoryDynamo(final Table applicationTable) {
+        this(applicationTable, QueryRetrievalStrategy.fromTable(applicationTable));
+    }
+
+    public ClientConfigRepositoryDynamo(final Table applicationTable, final IRetrievalStrategy query) {
         this.applicationTable = applicationTable;
+        this.query = query;
     }
 
     @Override
@@ -36,13 +42,8 @@ public class ClientConfigRepositoryDynamo implements IClientConfigRepository {
 
     @Override
     public QueryResult<IUserClientConfig> list(final QueryParams params) {
-        final Function<Table, QueryResult<Item>> adapter = QueryAdapter.builder()
-                .withHashKey("clientId")
-                .withIndexMap("email", applicationTable.getIndex(EMAIL_INDEX))
-                .withQueryParams(params)
-                .build();
         final Function<Item, IUserClientConfig> thunk = ClientConfigDynamo::new;
-        return adapter.andThen(result -> result.map(thunk)).apply(applicationTable);
+        return query.andThen(result -> result.map(thunk)).apply(params, applicationTable);
     }
 
     @Override
