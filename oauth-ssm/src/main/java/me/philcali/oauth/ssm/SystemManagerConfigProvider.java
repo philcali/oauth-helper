@@ -34,21 +34,21 @@ public class SystemManagerConfigProvider implements IConfigProvider {
 
     @Override
     public IClientConfig getConfig(final String apiType) {
+        final String pathPrefix = "/" + applicationName + "/" + apiType + "/";
         final GetParametersByPathResult result = ssm.getParametersByPath(new GetParametersByPathRequest()
-                .withPath("/" + applicationName + "/" + apiType)
+                .withPath(pathPrefix)
                 .withRecursive(true)
                 .withWithDecryption(true)
                 .withMaxResults(MAX_RESULTS));
-        final ClientConfig.Builder builder = ClientConfig.builder();
+        final ClientConfig.Builder builder = ClientConfig.builder().withApi(apiType);
         result.getParameters().forEach(parameter -> {
-            switch (parameter.getName()) {
+            final String name = parameter.getName().replace(pathPrefix, "");
+            switch (name) {
             case "scopes":
                 builder.withScopes(parameter.getValue().split("\\s*,\\s*"));
                 break;
             default:
-                APPLICATORS.get(parameter.getName())
-                        .apply(builder)
-                        .accept(parameter.getValue());
+                APPLICATORS.get(name).apply(builder).accept(parameter.getValue());
             }
         });
         return builder.build();
