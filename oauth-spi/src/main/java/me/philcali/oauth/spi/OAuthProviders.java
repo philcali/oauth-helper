@@ -54,20 +54,18 @@ public final class OAuthProviders {
         return StreamSupport.stream(providers.spliterator(), false).collect(Collectors.toList());
     }
 
-    public static IAuthManager newAuthManager(final IClientConfig config, final ClassLoader loader,
-            final String...params) {
+    public static <T extends IAuthManager> T newAuthManager(final IClientConfig config, final ClassLoader loader,
+            final Class<T> authClass, final String...params) {
         final Function<OAuthProvider, IAuthManager> thunk = provider -> provider.createManager(config, params);
-        final Optional<IAuthManager> optionalManager = findAuthProvider(config).map(thunk);
-        return optionalManager
-                .orElseGet(() -> Optional.ofNullable(loader)
-                        .map(OAuthProviders::loadProviders)
-                        .flatMap(providers -> findAuthProvider(config, providers).map(thunk))
+        final Optional<IAuthManager> optionalManager = findAuthProvider(config, loadProviders(loader)).map(thunk);
+        return optionalManager.map(authClass::cast)
                         .orElseThrow(() -> new OAuthProviderNotFoundException("Provider of " + config.getApi()
-                                + " not found.")));
+                                + " not found."));
     }
 
-    public static IAuthManager newAuthManager(final IClientConfig config, final String...params) {
-        return newAuthManager(config, null, params);
+    public static <T extends IAuthManager> T newAuthManager(final IClientConfig config, final Class<T> authClass,
+            final String...params) {
+        return newAuthManager(config, null, authClass, params);
     }
 
     private OAuthProviders() {
