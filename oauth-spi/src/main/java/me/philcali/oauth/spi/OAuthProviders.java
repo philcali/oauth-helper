@@ -1,6 +1,5 @@
 package me.philcali.oauth.spi;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
@@ -10,18 +9,8 @@ import java.util.stream.StreamSupport;
 
 import me.philcali.oauth.api.IAuthManager;
 import me.philcali.oauth.api.model.IClientConfig;
-import me.philcali.oauth.spi.config.DefaultConfigProviderChain;
-import me.philcali.oauth.spi.config.IConfigProvider;
 
 public final class OAuthProviders {
-    private static final List<OAuthProvider> DEFAULT_PROVIDERS;
-    static {
-        DEFAULT_PROVIDERS = Collections.unmodifiableList(loadProviders(null));
-    }
-
-    private static Optional<OAuthProvider> findAuthProvider(final IClientConfig config) {
-        return findAuthProvider(config, DEFAULT_PROVIDERS);
-    }
 
     private static Optional<OAuthProvider> findAuthProvider(final IClientConfig config,
             final List<OAuthProvider> providers) {
@@ -30,27 +19,8 @@ public final class OAuthProviders {
                 .findFirst();
     }
 
-    public static IAuthManager getAuthManager(final IClientConfig config) {
-        return findAuthProvider(config)
-                .map(provider -> provider.getManager(config))
-                .orElseThrow(() -> new OAuthProviderNotFoundException("Provider of " + config.getApi()
-                        + " not found."));
-    }
-
-    public static <T extends IAuthManager> T getAuthManager(final String api, final Class<T> authClass) {
-        return getAuthManager(api, new DefaultConfigProviderChain(), authClass);
-    }
-
-    public static <T extends IAuthManager> T getAuthManager(final String api, final IConfigProvider provider,
-            final Class<T> authClass) {
-        return authClass.cast(getAuthManager(provider.getConfig(api)));
-    }
-
-
     private static List<OAuthProvider> loadProviders(final ClassLoader loader) {
-        final ServiceLoader<OAuthProvider> providers = ServiceLoader.load(
-                OAuthProvider.class,
-                Optional.ofNullable(loader).orElseGet(ClassLoader::getSystemClassLoader));
+        final ServiceLoader<OAuthProvider> providers = ServiceLoader.load(OAuthProvider.class, loader);
         return StreamSupport.stream(providers.spliterator(), false).collect(Collectors.toList());
     }
 

@@ -14,7 +14,6 @@
   	<module>oauth-google</module>
     <module>oauth-dynamo</module>
     <module>oauth-spi</module>
-    <module>oauth-ssm</module>
   </modules>
 
   <properties>

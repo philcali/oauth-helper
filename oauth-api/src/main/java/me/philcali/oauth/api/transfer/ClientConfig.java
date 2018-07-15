@@ -3,6 +3,7 @@ package me.philcali.oauth.api.transfer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import me.philcali.oauth.api.model.IClientConfig;
 
@@ -90,8 +91,8 @@ public class ClientConfig implements IClientConfig {
 
     }
 
-    private static final int DEFAULT_CONNECT = 5;
-    private static final int DEFAULT_READ = 30;
+    private static final int DEFAULT_CONNECT = (int) TimeUnit.SECONDS.toMillis(5);
+    private static final int DEFAULT_READ = (int) TimeUnit.SECONDS.toMillis(30);
 
     public static Builder builder() {
         return new Builder();
