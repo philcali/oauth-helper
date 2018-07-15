@@ -38,5 +38,15 @@ public interface IClientConfigRepository {
                 .build());
     }
 
+    default Optional<IUserClientConfig> getByOwner(final String email, final String api) {
+        return list(QueryParams.builder()
+                .withConditions(
+                        Conditions.attribute("email").equalsTo(email),
+                        Conditions.attribute("api").equalsTo(api))
+                .build())
+                .getItems().stream()
+                .findFirst();
+    }
+
     IUserClientConfig save(String email, IClientConfig config);
 }
