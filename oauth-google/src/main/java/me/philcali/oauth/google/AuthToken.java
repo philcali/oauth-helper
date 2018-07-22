@@ -2,20 +2,21 @@ package me.philcali.oauth.google;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 import me.philcali.oauth.api.model.IExpiringToken;
 
 public class AuthToken implements IExpiringToken {
     private static final String APPLICATION = "google";
-    private final Map<String, String> data;
+    private final Map<String, Object> data;
     private final String refreshToken;
     private final String clientId;
 
-    public AuthToken(Map<String, String> data) {
+    public AuthToken(Map<String, Object> data) {
         this(null, null, data);
     }
 
-    public AuthToken(String refreshToken, String clientId, Map<String, String> data) {
+    public AuthToken(String refreshToken, String clientId, Map<String, Object> data) {
         this.refreshToken = refreshToken;
         this.clientId = clientId;
         this.data = data;
@@ -23,7 +24,7 @@ public class AuthToken implements IExpiringToken {
 
     @Override
     public String getAccessToken() {
-        return data.get("access_token");
+        return data.get("access_token").toString();
     }
 
     @Override
@@ -33,22 +34,24 @@ public class AuthToken implements IExpiringToken {
 
     @Override
     public String getClientId() {
-        return data.getOrDefault("client_id", clientId);
+        return data.getOrDefault("client_id", clientId).toString();
     }
 
     @Override
     public long getExpiresIn() {
-        return Long.parseLong(data.get("expires_in"));
+        return (System.currentTimeMillis() / 1000) + ((Integer) data.get("expires_in")).longValue();
     }
 
     @Override
     public String getRefreshToken() {
-        return data.getOrDefault("refresh_token", refreshToken);
+        return Optional.ofNullable(data.get("refresh_token"))
+                .map(token -> (String) token)
+                .orElse(refreshToken);
     }
 
     @Override
     public String getTokenType() {
-        return data.get("token_type");
+        return data.get("token_type").toString();
     }
 
     @Override

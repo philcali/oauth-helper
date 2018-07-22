@@ -51,8 +51,9 @@ public class TokenRepositoryDynamo implements ITokenRepository {
                 .withMap("params", token.getParams());
         if (token instanceof IExpiringToken) {
             IExpiringToken expiringToken = (IExpiringToken) token;
-            item.withLong("expiresIn", expiringToken.getExpiresIn())
-                    .withString("refreshToken", expiringToken.getRefreshToken());
+            item.withLong("expiresIn", expiringToken.getExpiresIn());
+            Optional.ofNullable(expiringToken.getRefreshToken())
+                    .ifPresent(refreshToken -> item.withString("refreshToken", refreshToken));
         }
         try {
             tokenTable.putItem(item);
