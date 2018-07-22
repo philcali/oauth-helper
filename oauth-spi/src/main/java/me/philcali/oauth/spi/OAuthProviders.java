@@ -19,7 +19,7 @@ public final class OAuthProviders {
                 .findFirst();
     }
 
-    private static List<OAuthProvider> loadProviders(final ClassLoader loader) {
+    public static List<OAuthProvider> loadProviders(final ClassLoader loader) {
         final ServiceLoader<OAuthProvider> providers = ServiceLoader.load(OAuthProvider.class, loader);
         return StreamSupport.stream(providers.spliterator(), false).collect(Collectors.toList());
     }

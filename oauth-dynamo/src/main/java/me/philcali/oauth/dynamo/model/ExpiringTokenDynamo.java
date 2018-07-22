@@ -1,5 +1,7 @@
 package me.philcali.oauth.dynamo.model;
 
+import java.util.Map;
+
 import com.amazonaws.services.dynamodbv2.document.Item;
 
 import me.philcali.oauth.api.model.IExpiringToken;
@@ -39,6 +41,11 @@ public class ExpiringTokenDynamo implements IExpiringToken {
     @Override
     public String getTokenType() {
         return item.getString("tokenType");
+    }
+
+    @Override
+    public Map<String, String> getParams() {
+        return item.getMap("params");
     }
 
 }

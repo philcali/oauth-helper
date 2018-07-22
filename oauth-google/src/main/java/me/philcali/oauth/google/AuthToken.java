@@ -1,11 +1,12 @@
 package me.philcali.oauth.google;
 
+import java.util.Collections;
 import java.util.Map;
 
 import me.philcali.oauth.api.model.IExpiringToken;
 
 public class AuthToken implements IExpiringToken {
-    private static final String APPLICATION = "GOOGLE";
+    private static final String APPLICATION = "google";
     private final Map<String, String> data;
     private final String refreshToken;
     private final String clientId;
@@ -48,6 +49,11 @@ public class AuthToken implements IExpiringToken {
     @Override
     public String getTokenType() {
         return data.get("token_type");
+    }
+
+    @Override
+    public Map<String, String> getParams() {
+        return Collections.emptyMap();
     }
 
 }

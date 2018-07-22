@@ -2,6 +2,7 @@ package me.philcali.oauth.google;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringJoiner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,18 +62,18 @@ public class AuthManagerGoogle implements IExpiringAuthManager {
     }
 
     @Override
-    public String getAuthUrl(String...state) {
+    public String getAuthUrl(final Map<String, String> additionalParams, final String...state) {
         final StringJoiner joiner = new StringJoiner(" ");
         config.getScopes().forEach(joiner::add);
-        return new URLBuilder(AUTH_URL)
+        final URLBuilder builder = new URLBuilder(AUTH_URL)
                 .addQueryParam("client_id", config.getClientId())
                 .addQueryParam("redirect_uri", config.getRedirectUrl())
                 .addQueryParam("response_type", "code")
                 .addQueryParam("scope", joiner.toString())
                 .addQueryParam("state", generateState(state))
-                .addQueryParam("include_granted_scopes", true)
-                .build()
-                .toString();
+                .addQueryParam("include_granted_scopes", true);
+        additionalParams.forEach(builder::addQueryParam);
+        return builder.build().toString();
     }
 
     @SuppressWarnings("unchecked")
