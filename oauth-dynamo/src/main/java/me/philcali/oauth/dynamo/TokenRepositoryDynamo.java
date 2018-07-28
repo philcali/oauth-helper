@@ -31,6 +31,7 @@ public class TokenRepositoryDynamo implements ITokenRepository {
                 .with("accessToken", UUID.randomUUID().toString())
                 .with("tokenType", "WEBSITE")
                 .with("refreshToken", UUID.randomUUID().toString())
+                .with("clientId", config.getClientId())
                 .withMap("params", params)
                 .withLong("expiresIn", now() + SESSION_EXPIRES);
         try {
