@@ -8,18 +8,18 @@ import me.philcali.db.api.Conditions;
 import me.philcali.db.api.QueryParams;
 import me.philcali.db.api.QueryResult;
 import me.philcali.oauth.api.model.IClientConfig;
+import me.philcali.oauth.api.model.IClientConfigData;
 import me.philcali.oauth.api.model.IUserClientConfig;
-import me.philcali.oauth.api.transfer.ClientConfig;
 
 public interface IClientConfigRepository {
     Random RANDOM = new Random();
 
     default IUserClientConfig generate(String email, String apiType, String...scopes) {
-        final IClientConfig credentials = ClientConfig.builder()
+        final IClientConfig credentials = IClientConfigData.builder()
                 .withApi(apiType)
                 .withClientId(generateSecureHash(256))
                 .withClientSecret(generateSecureHash(128))
-                .withScopes(scopes)
+                .addScopes(scopes)
                 .build();
         return save(email, credentials);
     }

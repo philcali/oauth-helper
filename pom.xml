@@ -22,6 +22,14 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
+  <repositories>
+	  <repository>
+		  <id>me.philcali.maven</id>
+		  <name>Philcali Maven Repo</name>
+		  <url>http://philcali.me/projects</url>
+    </repository>
+  </repositories>
+
   <dependencyManagement>
   	<dependencies>
   		<dependency>

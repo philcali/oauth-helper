@@ -19,5 +19,16 @@
   		<artifactId>db-api</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>me.philcali.zero</groupId>
+  		<artifactId>lombok-annotation</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>me.philcali.zero</groupId>
+  		<artifactId>lombok-processor</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+		<optional>true</optional>
+	</dependency>
   </dependencies>
 </project>

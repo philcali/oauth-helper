@@ -2,13 +2,13 @@ package me.philcali.oauth.dynamo.model;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 
+import me.philcali.oauth.api.model.IClientConfigData;
 import me.philcali.oauth.api.model.IUserClientConfig;
-import me.philcali.oauth.api.transfer.ClientConfig;
 
-public class ClientConfigDynamo extends ClientConfig implements IUserClientConfig {
+public class ClientConfigDynamo extends IClientConfigData implements IUserClientConfig {
     private String email;
 
-    public ClientConfigDynamo(Item item) {
+    public ClientConfigDynamo(final Item item) {
         email = item.getString("email");
         setApi(item.getString("api"));
         setClientId(item.getString("clientId"));
